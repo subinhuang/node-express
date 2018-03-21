@@ -1,0 +1,44 @@
+
+        <div class="col-md-8 col-md-offset-2">
+          <h1><%= post.title %></h1>
+          <div><%- post.mkContent %></div>
+        </div>
+        <% if(currentUser && currentUser._id.toString() === post.authorId.toString() ) { %>
+        <div class="btn-group pull-right">
+          <button type="button" class="btn btn-default">操作</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="/posts/edit?id=<%= post._id %>">编辑</a></li>
+            <!-- <button class="btn btn-default" v-on:click="submit">删除</button> -->
+            <li><a href='#' v-on:click="submit">删除</a></li>
+            
+
+          </ul>
+        </div>
+        <%}%>
+
+<script>
+var postId = '<%= post._id %>'
+var vm = new Vue({
+  el: '#app',
+  data: {
+    title: '',
+    content: ''
+  },
+  methods:{
+    submit () {
+      axios.delete('/api/v1/posts/' + postId)
+      .then(function(response) {
+        alert('删除成功！')
+        window.location = '/posts';
+      })
+      .catch(function(err) {
+        alert(err);
+      });
+     }
+  }
+});
+</script>
